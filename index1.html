@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>今日校园</title>
+	<script src="jquery-3.6.0.min.js"></script>
+	<script src="index1.js"></script>
+	<link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+	<div class="top">
+		<div class="back"><img src="./img/2_1.png" id="img2"></div>
+		<div class="img">
+			<input type="file" style='position: absolute; opacity: 0; top: 150px; height: 650px;'
+				onchange="handleFiles(this.files,this.parentNode)">
+			<img src="./img/1.png" id="img1">
+		</div>
+	</div>
+	<div class="main">
+		<div class="time">
+			<span class="text">扫码时间：</span>
+			<span class="myday"></span>
+			<span class="mytime"></span>
+		</div>
+		<hr>
+
+		<div class="id"><span onclick="changetext()" class="num">12345678</span></div>
+		<div class="hr2"></div>
+		<div class="infos">
+			<p>姓名 <input type="text" name="" id="" value=""></p>
+			<p class="info">学号 <input type="text" name="" id="" value=""></p>
+			<p class="info">学院 <input type="text" name="" id="" value=""></p>
+		</div>
+	</div>
+
+	<script>
+		function changetext() {
+			let num = prompt('8个数字');
+			if (num.length == 0) {
+				alert('请输入8个数字')
+				$('.num').text(12345678);
+			} else if (num.length == 8) {
+				$('.num').text(num);
+			} else if (num.length < 8) {
+				alert('请输入8个数字')
+				$('.num').text(12345678);
+			} else if (num.length > 8) {
+				alert('请输入8个数字')
+				$('.num').text(12345678);
+			}
+		}
+		//构建预览上传图片的函数，并接收传递过来的2个变量参数
+		function handleFiles(file, obj) {
+			//获取当前点击的元素的所有同级元素的html内容
+			var con = obj.innerHTML;
+			//判断当前点击元素内是否已经存在img图片元素，如果有则先全部清除后再添加，如果没有就直接添加
+			if (con.indexOf("img") > 0) {
+				var pic = obj.getElementsByTagName("img");
+				for (var i = 0; i < pic.length; i++) {
+					obj.removeChild(pic[i]);
+				}
+				//调用添加img图片的函数
+				creatImg();
+			} else {
+				creatImg();
+			}
+
+			function creatImg() {
+				//创建一个img元素
+				var img = document.createElement("img");
+				//设置img元素的源文件路径，window.URL.createObjectURL() 方法会根据传入的参数创建一个指向该参数对象的URL. 这个URL的生命仅存在于它被创建的这个文档里
+				img.src = window.URL.createObjectURL(file[0]);
+				img.setAttribute('style', 'width: 661px; height: 909px; vertical-align: middle; margin-right: 5px;')
+				//window.URL.revokeObjectURL() 释放一个通过URL.createObjectURL()创建的对象URL，在图片被显示出来后，我们就不再需要再次使用这个URL了，因此必须要在加载后释放它
+				img.onload = function () {
+					window.URL.revokeObjectURL(this.src);
+				}
+				//在当前点击的input元素后添加刚刚创建的img图片元素
+				obj.appendChild(img);
+			}
+		}
+	</script>
+</body>
+
+</html>
